@@ -22,6 +22,7 @@ width  = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
 height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)  
 print("frame dimentions: ", width, height )
 object_detector = cv2.createBackgroundSubtractorMOG2()   #Extract the background
+#for seperation of the video file and stitching the multiple frame with contour- Check for proper documentation under Opencv- fourcc*MP4V
 # fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 # out = cv2.VideoWriter('file_data.mp4',fourcc,20,(1920,1080), True)
 fps = cap.get(cv2.CAP_PROP_FPS) 
@@ -49,6 +50,7 @@ while True:
         res = cv2.bitwise_and(frame,frame,mask=mask)
         for cnt in contours:
             area = cv2.contourArea(cnt)
+            #thresholding the contour with different area sizes
             if area>1500:    #detect for the flashes above 1000pixel
                 blur = cv2.GaussianBlur(mask,(13,13), 11)
                 heatmap_img = cv2.applyColorMap(blur, cv2.COLORMAP_JET)
