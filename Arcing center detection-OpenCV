@@ -7,6 +7,42 @@ import numpy as np
 import subprocess
 import matplotlib.pyplot as plt
 
+approx_x = []
+approx_y = []
+approx_z = []
+a_x= []
+a_y= []
+a_z= []
+error_Debug = []
+def center_thresholding(datax,datay):
+    df = np.stack((datax,datay),axis = -1)
+    #Thresholding all the reflection from the frame
+    for i in range(len(df)):
+        if ((df[i][0]>400) and (df[i][1]>400) and (df[i][0]<1450)):
+            approx_x.append(df[i][0])
+            approx_y.append(df[i][1])
+            approx_z.append(dataz[i])
+
+#counting for the individual coordinate hit 
+#encircle with center and radius and looking for all the events within the circle
+def area_thresholding(df):
+    for i in range(len(df)):
+        lx = (abs(df[i][0]-920))*(abs(df[i][0]-920))
+        ly = (abs(df[i][1]-800))*(abs(df[i][1]-800))
+        if((lx+ly)<230000):
+            if((df[i][0]<700)and(df[i][1]<800)):
+                error_Debug.append(df[i])
+            else:
+                if((df[i][0]<1275)and(df[i][0]>575)):
+                    a_x.append(df[i][0])
+                    a_y.append(df[i][1])
+                    a_z.append(dataz[i])
+                else:
+                    error_Debug.append(df[i])
+        else:
+            error_Debug.append(df[i]) 
+
+
 #from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 #FUNCTION takes the date and time from the file_name and convert it to the unix time format for the event current time synchronyzation 
 #file_name = input("Enter the File Name: ")
@@ -80,3 +116,26 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+     
+        
+#counting for the individual coordinate hit 
+#encircle with center and radius and looking for all the events within the circle
+a_x= []
+a_y= []
+a_z= []
+error_Debug = []
+for i in range(len(df)):
+    lx = (abs(df[i][0]-920))*(abs(df[i][0]-920))
+    ly = (abs(df[i][1]-800))*(abs(df[i][1]-800))
+    if((lx+ly)<230000):
+        if((df[i][0]<700)and(df[i][1]<800)):
+            error_Debug.append(df[i])
+        else:
+            if((df[i][0]<1275)and(df[i][0]>575)):
+                a_x.append(df[i][0])
+                a_y.append(df[i][1])
+                a_z.append(dataz[i])
+            else:
+                error_Debug.append(df[i])
+    else:
+        error_Debug.append(df[i]) 
